@@ -1,0 +1,66 @@
+﻿using System;
+
+namespace Coding.Exercise
+{
+    public record struct WeatherData(int? Temperature, int? Humidity);
+
+    public class WeatherDataAggregator
+    {
+        public IEnumerable<WeatherData> WeatherHistory => _weatherHistory;
+        private List<WeatherData> _weatherHistory = new();
+
+        public void GetNotifiedAboutNewData(object sender, WeatherDataEventArgs e)
+        {
+            _weatherHistory.Add(e.WeatherData);
+        }
+    }
+
+
+    public class WeatherStation
+    {
+        public event EventHandler<WeatherDataEventArgs>? WeatherMeasured;
+
+        public void Measure()
+        {
+            int temperature = 25;
+
+            OnWeatherMeasured(temperature);
+        }
+
+        private void OnWeatherMeasured(int temperature)
+        {
+            var data = new WeatherData(temperature, null);
+            var args = new WeatherDataEventArgs(data);
+            WeatherMeasured?.Invoke(this, args);
+        }
+    }
+
+    public class WeatherBaloon
+    {
+        public event EventHandler<WeatherDataEventArgs>? WeatherMeasured;
+
+        public void Measure()
+        {
+            int humidity = 50;
+
+            OnWeatherMeasured(humidity);
+        }
+
+        private void OnWeatherMeasured(int humidity)
+        {
+            var data = new WeatherData(null, humidity);
+            var args = new WeatherDataEventArgs(data);
+            WeatherMeasured?.Invoke(this, args);
+        }
+    }
+
+    public class WeatherDataEventArgs : EventArgs
+    {
+        public WeatherData WeatherData { get; }
+
+        public WeatherDataEventArgs(WeatherData weatherData)
+        {
+            WeatherData = weatherData;
+        }
+    }
+}

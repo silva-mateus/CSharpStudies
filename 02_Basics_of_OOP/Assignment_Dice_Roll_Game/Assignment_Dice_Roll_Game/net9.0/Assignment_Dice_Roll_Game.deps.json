@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "Assignment_Dice_Roll_Game/1.0.0": {
+        "runtime": {
+          "Assignment_Dice_Roll_Game.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Assignment_Dice_Roll_Game/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

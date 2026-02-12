@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "IX10_MinimalAPI_ProductCatalog": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:63653;http://localhost:63654"
+    }
+  }
+}

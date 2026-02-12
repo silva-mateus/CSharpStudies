@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\silmat01\OneDrive - CSG Systems Inc\Desktop\Pessoal\code\CSharpStudies\Assignment_Quote_Finder\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\silmat01\OneDrive - CSG Systems Inc\Desktop\Pessoal\code\CSharpStudies\Assignment_Quote_Finder\.editorconfig" />
+  </ItemGroup>
+
+</Project>

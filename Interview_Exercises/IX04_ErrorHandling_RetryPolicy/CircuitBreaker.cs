@@ -13,6 +13,9 @@ public class CircuitBreaker
     private readonly TimeSpan _openDuration;
     private readonly IDelayProvider _delayProvider;
 
+    private int _consecutiveFailures;
+    private DateTime? _openedAtUtc;
+
     public CircuitState State { get; private set; } = CircuitState.Closed;
 
     public CircuitBreaker(
@@ -25,18 +28,41 @@ public class CircuitBreaker
         _delayProvider = delayProvider;
     }
 
-    /// <summary>
-    /// Executes the given async action through the circuit breaker.
-    ///
-    /// - Closed: Execute normally. On success, reset failures. On failure, increment.
-    ///   If failures >= threshold, transition to Open (record the time).
-    /// - Open: Throw CircuitBreakerOpenException immediately.
-    ///   If openDuration has elapsed since opening, transition to HalfOpen instead.
-    /// - HalfOpen: Execute as a trial. On success -> Closed. On failure -> Open.
-    /// </summary>
     public async Task<T> ExecuteAsync<T>(Func<Task<T>> action)
     {
-        // TODO: your code goes here
-        throw new NotImplementedException();
+        if (State == CircuitState.Open)
+        {
+            if (_delayProvider.UtcNow - _openedAtUtc.GetValueOrDefault() < _openDuration)
+                throw new CircuitBreakerOpenException();
+
+            State = CircuitState.HalfOpen; // do a trial run
+        }
+
+        try
+        {
+            var result = await action();
+
+            _consecutiveFailures = 0;
+            State = CircuitState.Closed;
+            return result;
+        }
+        catch
+        {
+            if (State == CircuitState.HalfOpen)
+            {
+                State = CircuitState.Open;
+                _openedAtUtc = _delayProvider.UtcNow;
+                throw;
+            }
+
+            //Closed
+            _consecutiveFailures++;
+            if (_consecutiveFailures >= _failureThreshold)
+            {
+                State = CircuitState.Open;
+                _openedAtUtc = _delayProvider.UtcNow;
+            }
+            throw;
+        }
     }
 }

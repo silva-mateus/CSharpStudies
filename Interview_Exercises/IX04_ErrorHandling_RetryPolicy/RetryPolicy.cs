@@ -28,7 +28,37 @@ public class RetryPolicy
     /// </summary>
     public async Task<T> ExecuteAsync<T>(Func<Task<T>> action)
     {
-        // TODO: your code goes here
-        throw new NotImplementedException();
+        Exception? lastException = null;
+        for (int attempt = 0; attempt <= _maxRetries; attempt++)
+        {
+            try
+            {
+                return await action();
+            }
+            catch (Exception ex)
+            {
+                lastException = ex;
+                if (!IsRetriable(ex))
+                    throw;
+
+                if (attempt == _maxRetries)
+                    throw;
+
+                var delay = TimeSpan.FromTicks(_initialDelay.Ticks * (1 << attempt));
+                await _delayProvider.DelayAsync(delay);
+            }
+        }
+        throw lastException!;
+
     }
+
+    private bool IsRetriable(Exception ex)
+    {
+        if (_retriableExceptions.Length == 0)
+            return true;
+
+        var thrownType = ex.GetType();
+        return _retriableExceptions.Any(t => t.IsAssignableFrom(thrownType));
+    }
+
 }

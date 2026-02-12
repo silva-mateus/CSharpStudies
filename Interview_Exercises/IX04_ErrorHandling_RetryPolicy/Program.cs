@@ -35,13 +35,13 @@ var breaker = new CircuitBreaker(
     openDuration: TimeSpan.FromSeconds(5),
     delayProvider: delayProvider);
 
-for (int i = 0; i < 5; i++)
+for (int i = 0; i < 10; i++)
 {
     try
     {
         var result = await breaker.ExecuteAsync<string>(async () =>
         {
-            await Task.Delay(10);
+            await Task.Delay(1000);
             throw new Exception("Service error");
         });
     }
@@ -53,4 +53,5 @@ for (int i = 0; i < 5; i++)
     {
         Console.WriteLine($"  Call {i + 1}: Failed - {ex.Message} (State: {breaker.State})");
     }
+    await Task.Delay(1000); // help check the transition between Closed -> Open -> HalfOpen -> Open
 }

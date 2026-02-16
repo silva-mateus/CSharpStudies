@@ -8,22 +8,13 @@ namespace IX06_SOLID_Refactoring_ReportGenerator;
 public class ReportGenerator
 {
     // Hardcoded CSV data -- SRP violation: data access mixed with business logic
-    private readonly string _csvData = @"Name,Department,Salary,HireDate
-Alice Johnson,Engineering,120000,2019-03-15
-Bob Smith,Engineering,110000,2020-07-01
-Carol White,Engineering,95000,2023-01-10
-David Brown,Marketing,85000,2018-11-20
-Eve Davis,Marketing,92000,2021-05-05
-Frank Miller,Sales,78000,2022-08-14
-Grace Wilson,Sales,105000,2017-02-28
-Henry Taylor,HR,72000,2020-09-03
-Ivy Anderson,HR,68000,2024-04-22
-Jack Thomas,Engineering,130000,2016-06-18
-Karen Lee,Marketing,88000,2019-08-30
-Leo Martinez,Sales,95000,2020-12-01
-Mia Garcia,HR,75000,2022-03-17
-Nathan Clark,Engineering,115000,2021-09-25
-Olivia Moore,Marketing,97000,2023-06-12";
+    private readonly string _csvData;
+
+    public ReportGenerator(string subdir, string csvFile)
+    {
+        var csvPath = Path.Combine(AppContext.BaseDirectory, "Data", "employees.csv");
+        _csvData = File.ReadAllText(csvPath);
+    }
 
     // This single method does EVERYTHING -- massive SRP violation
     public void GenerateReport(string format)

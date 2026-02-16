@@ -21,17 +21,56 @@ public class ParallelDataFetcher
     /// </summary>
     public async Task<IReadOnlyList<DataResult>> FetchAllAsync(string query, TimeSpan timeout)
     {
-        // TODO: your code goes here
-        // Hints:
-        // 1. Create a CancellationTokenSource with timeout.
-        // 2. Create a SemaphoreSlim(_maxConcurrency).
-        // 3. Launch a Task for each source that:
-        //    a. Awaits semaphore.WaitAsync(ct)
-        //    b. Calls source.FetchAsync(query, ct)
-        //    c. Releases semaphore in finally
-        // 4. Await Task.WhenAll and collect successful results.
-        // 5. If all failed, throw AggregateException with all exceptions.
-        throw new NotImplementedException();
+        using var cts = new CancellationTokenSource(timeout);
+        var ct = cts.Token;
+
+        using var semaphore = new SemaphoreSlim(_maxConcurrency);
+
+        var successes = new List<DataResult>();
+        var errors = new List<Exception>();
+        var sync = new object();
+
+
+        var tasks = _sources.Select(async source =>
+        {
+            try
+            {
+                await semaphore.WaitAsync(ct);
+                try
+                {
+                    var result = await source.FetchAsync(query, ct);
+                    lock (sync)
+                    {
+                        successes.Add(result);
+                    }
+                }
+                finally
+                {
+                    semaphore.Release();
+                }
+            }
+            catch (OperationCanceledException ex)
+            {
+                lock (sync)
+                {
+                    errors.Add(ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                lock (sync)
+                {
+                    errors.Add(ex);
+                }
+            }
+        });
+
+        await Task.WhenAll(tasks);
+
+        if (successes.Count > 0)
+            return successes;
+
+        throw new AggregateException("All sources failed.", errors);
     }
 
     /// <summary>
@@ -47,6 +86,37 @@ public class ParallelDataFetcher
         // Hint: Use Task.WhenAny in a loop, or System.Threading.Channels.
         // Start all fetches, then repeatedly await the next completing task.
         // Remove the yield break below and replace with your implementation.
-        yield break;
+
+        DataResult result;
+
+        var pending = _sources.ToDictionary(
+            source => source.FetchAsync(query, cancellationToken),
+            source => source);
+
+        while (pending.Count > 0)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var completedTask = await Task.WhenAny(pending.Keys);
+            var source = pending[completedTask];
+
+            pending.Remove(completedTask);
+
+            try
+            {
+                result = await completedTask;
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[{source.Name}] failed: {ex.Message}");
+                continue;
+            }
+
+            yield return result;
+        }
     }
 }

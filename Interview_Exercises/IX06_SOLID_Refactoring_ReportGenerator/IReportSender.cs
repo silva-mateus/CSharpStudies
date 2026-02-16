@@ -5,10 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace IX06_SOLID_Refactoring_ReportGenerator;
-
-public interface IDataReader
+public interface IReportSender
 {
-    List<Employee> Read();
-
+    void Send(string report);
 }
 

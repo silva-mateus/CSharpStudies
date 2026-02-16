@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace IX06_SOLID_Refactoring_ReportGenerator;
-
-public interface IDataReader
+public class ConsoleReportSender : IReportSender
 {
-    List<Employee> Read();
-
+    public void Send(string report)
+    {
+        Console.WriteLine(report);
+    }
 }
 

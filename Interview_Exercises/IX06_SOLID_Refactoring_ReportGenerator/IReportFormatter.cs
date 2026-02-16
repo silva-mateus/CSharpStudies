@@ -5,10 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace IX06_SOLID_Refactoring_ReportGenerator;
-
-public interface IDataReader
+public interface IReportFormatter
 {
-    List<Employee> Read();
-
+    string Format(EmployeesStatistics stats);
 }
 

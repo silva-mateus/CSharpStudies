@@ -6,8 +6,7 @@ public class EmailChannel : INotificationChannel
 
     public Task SendAsync(Notification notification)
     {
-        // TODO: Simulate sending an email (write to console).
-        // Example: Console.WriteLine($"[EMAIL] To: {notification.UserId} | {notification.Title}: {notification.Message}");
-        throw new NotImplementedException();
+        Console.WriteLine($"[EMAIL] To: {notification.UserId} | {notification.Title}: {notification.Message}");
+        return Task.CompletedTask;
     }
 }

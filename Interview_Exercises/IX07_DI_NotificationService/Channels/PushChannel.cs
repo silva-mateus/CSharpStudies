@@ -6,7 +6,7 @@ public class PushChannel : INotificationChannel
 
     public Task SendAsync(Notification notification)
     {
-        // TODO: Simulate sending a push notification (write to console).
-        throw new NotImplementedException();
+        Console.WriteLine($"[Push] notification To: {notification.UserId} | {notification.Title}: {notification.Message}");
+        return Task.CompletedTask;
     }
 }

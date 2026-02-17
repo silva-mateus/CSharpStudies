@@ -3,16 +3,16 @@
 <!-- TODO: Document each bug fix after you find and fix it. -->
 
 ## Bug #1: Off-by-one in pagination
-- **File**: 
-- **Line**: 
-- **Problem**: 
-- **Fix**: 
+- **File**: BuggyServices.cs
+- **Line**: 23
+- **Problem**: should be `(page - 1) * pageSize` for 1-based pages
+- **Fix**: change `page * pageSize` to `(page -1) * pageSize`
 
 ## Bug #2: Race condition
-- **File**: 
-- **Line**: 
-- **Problem**: 
-- **Fix**: 
+- **File**: BuggyServices.cs
+- **Line**: 54
+- **Problem**: The Dictionary is not thread-safe 
+- **Fix**: Replace the dictionary by ConcurrentDictionary 
 
 ## Bug #3: SQL injection
 - **File**: 

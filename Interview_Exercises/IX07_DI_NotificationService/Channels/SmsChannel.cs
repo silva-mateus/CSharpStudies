@@ -6,7 +6,7 @@ public class SmsChannel : INotificationChannel
 
     public Task SendAsync(Notification notification)
     {
-        // TODO: Simulate sending an SMS (write to console).
-        throw new NotImplementedException();
+        Console.WriteLine($"[SMS] To: {notification.UserId} | {notification.Title}: {notification.Message}");
+        return Task.CompletedTask;
     }
 }

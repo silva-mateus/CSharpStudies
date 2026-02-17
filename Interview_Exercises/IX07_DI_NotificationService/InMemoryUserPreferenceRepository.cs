@@ -11,7 +11,7 @@ public class InMemoryUserPreferenceRepository : IUserPreferenceRepository
 
     public Task<UserPreference?> GetPreferencesAsync(string userId)
     {
-        // TODO: Return the preference if found, null otherwise.
-        throw new NotImplementedException();
+        _preferences.TryGetValue(userId, out var preference);
+        return Task.FromResult(preference);
     }
 }

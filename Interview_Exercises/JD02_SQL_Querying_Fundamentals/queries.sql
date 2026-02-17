@@ -11,9 +11,15 @@ GO
 -- ordered by salary descending.
 -- Expected columns: FirstName, LastName, Salary, HireDate
 -- ============================================================
-
--- TODO: Write your query here
-
+SELECT
+	FirstName,
+	LastName,
+	Salary,
+	HireDate
+FROM dbo.Employees e
+JOIN dbo.Departments d on e.DepartmentId = d.Id
+WHERE d.Name = 'Engineering'
+ORDER BY Salary DESC;
 
 -- ============================================================
 -- QUERY 2: INNER JOIN
@@ -22,8 +28,22 @@ GO
 -- Expected columns: OrderId, CustomerName, OrderDate, Status, TotalItems
 -- ============================================================
 
--- TODO: Write your query here
-
+SELECT 
+	o.Id AS OrderId,
+	c.Name AS CustomerName,
+	o.OrderDate AS OrderDate,
+	o.Status AS Status,
+	SUM(oi.Quantity) AS TotalItems
+FROM dbo.Orders o
+JOIN dbo.Customers c
+	ON o.CustomerId = c.Id
+JOIN dbo.OrderItems oi
+	ON o.Id = oi.OrderId
+GROUP BY
+	o.Id,
+	c.Name,
+	o.OrderDate,
+	o.Status;
 
 -- ============================================================
 -- QUERY 3: LEFT JOIN to find orphaned records
@@ -31,7 +51,16 @@ GO
 -- Expected columns: Id, Name, Email, City
 -- ============================================================
 
--- TODO: Write your query here
+SELECT
+	c.Id,
+	c.Name,
+	c.Email,
+	c.City
+FROM dbo.Customers c
+LEFT JOIN dbo.Orders o
+	on c.Id = o.CustomerId
+WHERE
+	o.Id IS NULL;
 
 
 -- ============================================================
@@ -41,8 +70,16 @@ GO
 -- Expected columns: DepartmentName, EmployeeCount, AvgSalary
 -- ============================================================
 
--- TODO: Write your query here
-
+SELECT
+	d.Name as DepartmentName,
+	Count(e.Id) as EmployeeCount,
+	AVG(e.Salary) as AvgSalary
+FROM dbo.Employees e
+join dbo.Departments d
+	on e.DepartmentId = d.Id
+group by
+	d.Name
+having AVG(e.Salary) > 80000;
 
 -- ============================================================
 -- QUERY 5: Subquery in WHERE
@@ -50,8 +87,24 @@ GO
 -- of their own department.
 -- Expected columns: FirstName, LastName, Salary, DepartmentName, DeptAvgSalary
 -- ============================================================
-
--- TODO: Write your query here
+SELECT
+	e.FirstName,
+	e.LastName,
+	e.Salary,
+	d.Name as DepartmentName,
+	(
+		SELECT AVG(Salary)
+		from Employees
+		WHERE DepartmentId = e.DepartmentId
+	) as DeptAvgSalary
+FROM dbo.Employees e
+join dbo.Departments d
+	on e.DepartmentId = d.Id
+WHERE e.Salary > (
+	SELECT AVG(Salary)
+	from Employees
+	WHERE DepartmentId = e.DepartmentId
+);
 
 
 -- ============================================================
@@ -62,8 +115,17 @@ GO
 -- Expected columns: ProductName, Category, TotalQuantityOrdered
 -- ============================================================
 
--- TODO: Write your query here
-
+SELECT 
+	p.Name as ProductName,
+	p.Category,
+	Coalesce(
+		(
+			SELECT SUM(Quantity)
+			from dbo.OrderItems oi
+			where oi.ProductId = p.Id
+		),0
+	) as TotalQuantityOrdered
+FROM dbo.Products p;
 
 -- ============================================================
 -- QUERY 7: Common Table Expression (CTE)
@@ -72,8 +134,23 @@ GO
 -- Expected columns: CustomerName, TotalSpending
 -- ============================================================
 
--- TODO: Write your query here
-
+WITH customerRanks as (
+	SELECT 
+		o.CustomerId,
+		SUM(oi.Quantity * oi.UnitPrice) as TotalSpending
+	FROM dbo.Orders o
+	join dbo.OrderItems oi
+		on o.Id = oi.OrderId
+	group by
+		o.CustomerId
+)
+SELECT TOP 3
+	c.Name,
+	cr.TotalSpending
+FROM dbo.Customers c
+join customerRanks cr
+	on cr.CustomerId = c.Id
+order by cr.TotalSpending DESC;
 
 -- ============================================================
 -- QUERY 8: Window function - ROW_NUMBER
@@ -82,8 +159,18 @@ GO
 -- Expected columns: SalaryRank, FirstName, LastName, DepartmentName, Salary
 -- ============================================================
 
--- TODO: Write your query here
-
+SELECT
+	ROW_NUMBER() OVER (
+		PARTITION BY e.DepartmentId
+		ORDER BY e.Salary DESC
+	) as SalaryRank,
+	e.FirstName,
+	e.LastName,
+	d.Name as DepartmentName,
+	e.Salary
+FROM dbo.Employees e
+join dbo.Departments d on e.DepartmentId = d.Id
+ORDER BY d.Name, SalaryRank;
 
 -- ============================================================
 -- QUERY 9: Running total with SUM OVER
@@ -92,9 +179,33 @@ GO
 -- Quantity * UnitPrice).
 -- Expected columns: OrderId, OrderDate, CustomerName, OrderTotal, RunningTotal
 -- ============================================================
-
--- TODO: Write your query here
-
+WITH OrderTotals AS (
+SELECT 
+	o.Id AS OrderId,
+	o.OrderDate,
+	c.Name AS CustomerName,
+	SUM(oi.Quantity * oi.UnitPrice) AS OrderTotal
+FROM dbo.Orders o
+JOIN dbo.Customers c
+	ON o.CustomerId = c.Id
+JOIN dbo.OrderItems oi
+	ON o.Id = oi.OrderId
+GROUP BY
+	o.Id,
+	o.OrderDate,
+	c.Name
+)
+SELECT
+	OrderId,
+	OrderDate,
+	CustomerName,
+	OrderTotal,
+	SUM(OrderTotal) OVER (
+		ORDER BY OrderDate
+		ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+	) AS RunningTotal
+FROM OrderTotals
+ORDER BY OrderDate;
 
 -- ============================================================
 -- QUERY 10: PIVOT
@@ -102,9 +213,28 @@ GO
 -- category, pivoted by order status.
 -- Columns: Category, Pending, Shipped, Delivered, Cancelled
 -- ============================================================
-
--- TODO: Write your query here
-
+SELECT
+	Category,
+	ISNULL([Pending],0) as Pending,
+	ISNULL([Shipped],0) as Shipped,
+	ISNULL([Delivered],0) as Delivered,
+	ISNULL([Cancelled],0) as Cancelled
+FROM (
+	SELECT
+		p.Category,
+		o.Status,
+		oi.Quantity * oi.UnitPrice as SalesAmount
+		FROM dbo.OrderItems oi
+	JOIN dbo.Orders o
+		on oi.OrderId = o.Id
+	JOIN dbo.Products p
+		on oi.ProductId = p.Id
+) src
+PIVOT (
+	SUM(SalesAmount)
+	FOR Status IN ([Pending], [Shipped], [Delivered], [Cancelled])
+) pvt
+order by Category;
 
 -- ============================================================
 -- QUERY 11: Multi-table JOIN with aggregation (Report)
@@ -118,8 +248,37 @@ GO
 -- Expected columns: DepartmentName, EmployeeCount, AvgSalary, Budget, HighestPaidEmployee
 -- ============================================================
 
--- TODO: Write your query here
-
+WITH DeptStats AS (
+	SELECT
+		DepartmentId,
+		COUNT(*) AS EmployeeCount,
+		AVG(Salary) AS AvgSalary
+	FROM dbo.Employees
+	GROUP BY DepartmentId
+),
+HighestPaid as (
+	SELECT
+		DepartmentId,
+		CONCAT(FirstName, ' ', LastName) AS HighestPaidEmployee,
+		ROW_NUMBER() OVER (
+			PARTITION BY DepartmentId
+			ORDER BY Salary DESC
+		) AS rn
+	FROM dbo.Employees
+)
+SELECT
+	d.Name as DepartmentName,
+	ds.EmployeeCount,
+	ds.AvgSalary,
+	d.Budget,
+	hp.HighestPaidEmployee
+FROM dbo.Departments d
+LEFT JOIN DeptStats ds
+	on d.Id = ds.DepartmentId
+LEFT JOIN HighestPaid hp
+	on d.Id = hp.DepartmentId
+	AND hp.rn = 1
+ORDER BY ds.EmployeeCount DESC;
 
 -- ============================================================
 -- QUERY 12a: UPDATE with condition
@@ -127,7 +286,28 @@ GO
 -- (from GETUTCDATE()) to 'Cancelled'.
 -- ============================================================
 
--- TODO: Write your UPDATE statement here
+BEGIN TRANSACTION
+
+UPDATE dbo.Orders
+SET Status = 'Cancelled'
+WHERE 
+	Status = 'Pending'
+AND
+	OrderDate < DATEADD(DAY, -30, GETUTCDATE());
+
+SELECT @@ROWCOUNT;
+
+ROLLBACK
+
+-- Select to confirm
+SELECT  
+    *,
+    DATEDIFF(DAY, OrderDate, GETUTCDATE()) as DateDifference
+FROM dbo.Orders
+WHERE 
+    Status = 'Pending'
+AND
+    OrderDate < DATEADD(DAY, -30, GETUTCDATE());
 
 
 -- ============================================================
@@ -135,4 +315,15 @@ GO
 -- Delete all OrderItems that belong to 'Cancelled' orders.
 -- ============================================================
 
--- TODO: Write your DELETE statement here
+BEGIN TRANSACTION
+
+DELETE FROM dbo.OrderItems
+WHERE OrderId IN (
+	SELECT Id
+	FROM dbo.Orders
+	WHERE Status = 'Cancelled'
+);
+
+SELECT @@ROWCOUNT as RowsDeleted;
+
+ROLLBACK

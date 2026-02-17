@@ -20,7 +20,7 @@ public class ProductService
     // Page 1 should return items 0..(pageSize-1), but this skips the first item.
     public PagedResult<Product> GetPaged(int page, int pageSize)
     {
-        var skip = page * pageSize; // BUG: should be (page - 1) * pageSize for 1-based pages
+        var skip = (page - 1) * pageSize; // BUG: should be (page - 1) * pageSize for 1-based pages
         var items = _products.Skip(skip).Take(pageSize).ToList();
 
         return new PagedResult<Product>
@@ -51,7 +51,7 @@ public class ProductService
 public class OrderCache
 {
     // BUG #2: Race condition -- Dictionary is not thread-safe.
-    private readonly Dictionary<int, Order> _cache = new(); // BUG: should be ConcurrentDictionary
+    private readonly ConcurrentDictionary<int, Order> _cache = new(); // BUG: should be ConcurrentDictionary
 
     public void AddOrder(Order order)
     {
@@ -69,10 +69,10 @@ public class OrderCache
 public class QueryBuilder
 {
     // BUG #3: SQL injection vulnerability -- string concatenation.
-    public string BuildProductQuery(string categoryFilter)
+    public (string Query, string ParamName, string ParamValue) BuildProductQuery(string categoryFilter)
     {
         // BUG: directly concatenating user input into SQL. Should use parameterized query.
-        return $"SELECT * FROM Products WHERE Category = '{categoryFilter}'";
+        return ("SELECT * FROM Products WHERE Category = @Category", "@Category", categoryFilter);
     }
 
     /// <summary>

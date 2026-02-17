@@ -67,7 +67,7 @@ public class BugTests
 
         // After fixing, BuildProductQuery should return a parameterized query
         // that does NOT contain the raw user input in the SQL text.
-        query.Should().NotContain(maliciousInput);
+        query.Query.Should().NotContain(maliciousInput);
         query.Should().Contain("@");
     }
 

@@ -13,7 +13,7 @@ namespace IX09_Refactoring_LegacyOrderSystem;
 /// - Console.WriteLine for logging (tight coupling)
 /// - One god method that does everything
 /// </summary>
-public class OrderProcessor
+public class OrderProcessor_Original
 {
     // BUG: Static mutable dictionary with no synchronization -- race condition!
     private static Dictionary<string, Dictionary<string, string>> _orderCache = new();

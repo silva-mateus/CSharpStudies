@@ -1,6 +1,14 @@
 using IX09_Refactoring_LegacyOrderSystem;
+using IX09_Refactoring_LegacyOrderSystem.Calculators;
+using IX09_Refactoring_LegacyOrderSystem.DataAccess;
+using IX09_Refactoring_LegacyOrderSystem.Logger;
 
-var processor = new OrderProcessor();
+var orderRepository = new InMemoryOrderRepository();
+var shippingCalculator = new ShippingCalculator();
+var taxCalculator = new TaxCalculator();
+var logger = new ConsoleLogger();
+
+var processor = new OrderServices(orderRepository, shippingCalculator, taxCalculator, logger);
 
 // Sample order 1: Regular customer, $75 order
 var order1 = new Dictionary<string, string>
@@ -9,7 +17,7 @@ var order1 = new Dictionary<string, string>
     ["CustomerName"] = "John Doe",
     ["CustomerType"] = "regular",
     ["Items"] = "Widget x2;Gadget x1",
-    ["Total"] = "75.00"
+    ["Total"] = "49.00"
 };
 
 // Sample order 2: Premium customer, $250 order
@@ -19,7 +27,7 @@ var order2 = new Dictionary<string, string>
     ["CustomerName"] = "Jane Smith",
     ["CustomerType"] = "premium",
     ["Items"] = "Deluxe Widget x5",
-    ["Total"] = "250.00"
+    ["Total"] = "50.00"
 };
 
 // Sample order 3: VIP customer, $500 order

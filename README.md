@@ -1,139 +1,214 @@
-# C# Studies - Exercise Repository
+# C# Studies
 
-A comprehensive collection of C# programming exercises covering fundamentals, object-oriented programming, and advanced concepts.
+A comprehensive collection of C# exercises, projects, and interview preparation covering fundamentals through advanced topics like async programming, clean code, microservices, and design patterns.
 
-## 📚 Repository Structure
+## Repository Structure
 
-This repository contains 25 exercises organized by topic, with continuous numbering throughout.
-
----
-
-## 🎯 Module 1: Fundamentals (Ex01-Ex14)
-
-### Ex01 - Variables and Operators
-Basic variable operations and arithmetic operators in C#.
-**Topics:** Variables, operators, type inference
-
-### Ex02 - Boolean Type and Operators
-Working with boolean values and comparison operators.
-**Topics:** Boolean type, comparison operators, conditional logic
-
-### Ex03 - If-Else Conditional Statement
-*(No Readme available)*
-**Topics:** Conditional statements, if-else logic
-
-### Ex04 - Methods - AbsoluteOfSum
-Create a method that returns the absolute value of two numbers' sum.
-**Topics:** Method definition, parameters, return types, Math.Abs()
-
-### Ex05 - String Interpolation - FormatDate
-Format date components into a string using interpolation.
-**Topics:** String interpolation, string formatting
-
-### Ex06 - Switch Statement - DescribeDay
-Use switch statement to describe days based on number input.
-**Topics:** Switch statement, control flow, pattern matching
-
-### Ex07 - While Loop - CalculateSumOfNumbersBetween
-Calculate sum of numbers in a range using while loop.
-**Topics:** While loops, loop conditions, accumulator pattern
-
-### Ex08 - Do-While Loop - RepeatCharacter
-Build a string by repeating a character using do-while loop.
-**Topics:** Do-while loops, string building, guaranteed execution
-
-### Ex09 - For Loop - Factorial
-Calculate factorial of a number using for loop.
-**Topics:** For loops, factorial calculation, accumulator pattern
-
-### Ex10 - Arrays (1) - BuildHelloString
-Iterate through character array to build a string.
-**Topics:** Arrays, array iteration, string concatenation
-
-### Ex11 - Arrays (2) - IsWordPresentInCollection
-Search for a word in a string array.
-**Topics:** Array searching, string comparison, boolean returns
-
-### Ex12 - Multi-dimensional Arrays - FindMax
-Find maximum value in a 2D array.
-**Topics:** Multi-dimensional arrays, nested loops, boundary checking
-
-### Ex13 - Foreach Loop - IsAnyWordLongerThan
-Check if any word exceeds a specified length.
-**Topics:** Foreach loops, string length, early return pattern
-
-### Ex14 - Lists - GetOnlyUpperCaseWords
-Filter list to return only uppercase words without duplicates.
-**Topics:** Lists, character validation, filtering, duplicate removal
+```
+CSharpStudies/
+├── 01_Fundamentals/                              # Variables, loops, arrays, lists
+├── 02_Basics_of_OOP/                              # Classes, properties, constructors
+├── 03_OOP_Polymorphism_Inheritance_Interfaces/    # Inheritance, abstract, interfaces
+├── 04_Exceptions_and_error_handling/              # try-catch, rethrow, custom exceptions
+├── 06_LINQ/                                       # Where, Select, OrderBy, CookieCookbook
+├── 07_.Net_under_the_hood/                        # ref modifier, value vs reference types
+├── 13_Events/                                     # Delegates, events, event-driven patterns
+├── 14_Unit_tests/                                 # xUnit, test organization
+├── 15_Clean_Code/                                 # Naming, method refactoring, SOLID
+├── 16_Asynchrony_and_Multithreading/              # Threads, Tasks, async/await
+├── APICatalogo/                                   # ASP.NET Core API + VShop microservices
+└── Interview_Exercises/                           # Senior dev interview preparation
+```
 
 ---
 
-## 🏗️ Module 2: Basics of OOP (Ex15-Ex21)
+## Course Modules
 
-### Ex15 - HotelBooking Class
-Create a class with fields and constructor for hotel bookings.
-**Topics:** Class definition, fields, constructors, DateTime manipulation
+### 01 - Fundamentals (Ex01-Ex14 + Assignment)
 
-### Ex16 - Triangle Class
-Implement Triangle class with private fields and area calculation.
-**Topics:** Private fields, public methods, reserved keywords, integer division
+| Exercise | Topic |
+|----------|-------|
+| Ex01 | Variables and Operators |
+| Ex02 | Boolean Type and Operators |
+| Ex03 | If-Else Conditional Statement |
+| Ex04 | Methods - AbsoluteOfSum |
+| Ex05 | String Interpolation - FormatDate |
+| Ex06 | Switch Statement - DescribeDay |
+| Ex07 | While Loop - CalculateSumOfNumbersBetween |
+| Ex08 | Do-While Loop - RepeatCharacter |
+| Ex09 | For Loop - Factorial |
+| Ex10 | Arrays - BuildHelloString |
+| Ex11 | Arrays - IsWordPresentInCollection |
+| Ex12 | Multi-dimensional Arrays - FindMax |
+| Ex13 | Foreach Loop - IsAnyWordLongerThan |
+| Ex14 | Lists - GetOnlyUpperCaseWords |
+| Assignment | TODO List Console App |
 
-### Ex17 - Dog Class
-Build Dog class with multiple constructors and description method.
-**Topics:** Multiple constructors, constructor chaining, conditional logic
+### 02 - Basics of OOP (Ex15-Ex21 + Assignment)
 
-### Ex18 - Properties of the Order Class
-Add properties with validation to Order class.
-**Topics:** Properties, read-only properties, property validation, backing fields
+| Exercise | Topic |
+|----------|-------|
+| Ex15 | HotelBooking Class |
+| Ex16 | Triangle Class |
+| Ex17 | Dog Class (multiple constructors) |
+| Ex18 | Properties of the Order Class |
+| Ex19 | Computed Properties - DailyAccountState |
+| Ex20 | Static Classes - NumberToDayOfWeekTranslator |
+| Ex21 | string.Split and string.Join Methods |
+| Assignment | Dice Roll Game (with tests) |
 
-### Ex19 - Computed Properties - DailyAccountState
-Create computed properties that derive values from other properties.
-**Topics:** Computed properties, read-only properties, DateTime properties
+### 03 - OOP: Polymorphism, Inheritance & Interfaces (Ex22-Ex27)
 
-### Ex20 - Static Classes - NumberToDayOfWeekTranslator
-Implement static class for day number translation.
-**Topics:** Static classes, static methods, switch statements
+| Exercise | Topic |
+|----------|-------|
+| Ex22 | Inheritance & Overriding - Animals |
+| Ex23 | Virtual Methods - StringsProcessor Classes |
+| Ex24 | `is` Operator and Null Object |
+| Ex25 | Abstract Methods - Shapes |
+| Ex26 | Extension Methods - List Extensions |
+| Ex27 | Interfaces - Numeric Transformations |
 
-### Ex21 - string.Split and string.Join Methods
-Transform string separators using Split and Join.
-**Topics:** string.Split(), string.Join(), string manipulation
+### 04 - Exceptions and Error Handling
+
+| Exercise | Topic |
+|----------|-------|
+| Try-catch-finally | DivideNumbers |
+| Rethrowing_exceptions | Rethrow with `throw` |
+| Custom_exception | InvalidTransactionException |
+
+### 06 - LINQ
+
+| Exercise | Topic |
+|----------|-------|
+| Where_Distinct | Filtering and removing duplicates |
+| Select_Average | Projection and aggregation |
+| OrderBy_First_Last | Sorting and element access |
+| Count_Contains | Counting and membership |
+| Any_All | Quantifier operations |
+| CookieCookbook | Recipe app (JSON/text, file I/O) |
+
+### 07 - .NET Under the Hood
+
+| Exercise | Topic |
+|----------|-------|
+| ref_modifier | `ref` parameter passing |
+
+### 13 - Events
+
+| Exercise | Topic |
+|----------|-------|
+| Events_User_and_BankAccount | Delegates and events |
+| Events_WeatherDataAggregator | Event-driven data aggregation |
+
+### 14 - Unit Tests
+
+| Exercise | Topic |
+|----------|-------|
+| Session14 | Main project under test |
+| Session14.Tests | xUnit test suite |
+
+### 15 - Clean Code
+
+| Exercise | Topic |
+|----------|-------|
+| Ex60 | Naming Refactoring |
+| Ex61 | Method Refactoring |
+| Ex62 | Method Refactoring |
+| Assignment | Password Generator Refactoring (with tests) |
+
+### 16 - Asynchrony and Multithreading (Ex63-Ex67 + Assignment)
+
+| Exercise | Topic |
+|----------|-------|
+| Ex63 | Creating and Starting New Threads |
+| Ex64 | Tasks and Waiting |
+| Ex65 | Continuations |
+| Ex66 | Handling AggregateException |
+| Ex67 | Async/Await |
+| Assignment | Quote Finder (async app with tests) |
 
 ---
 
-## 🎨 Module 3: OOP - Polymorphism, Inheritance & Interfaces (Ex22-Ex25)
+## API & Microservices Projects
 
-### Ex22 - Inheritance & Overriding - Animals
-Define animal hierarchy with different leg counts.
-**Topics:** Inheritance, base classes, method overriding, virtual/override keywords
+### APICatalogo
 
-### Ex23 - Virtual Methods - StringsProcessor Classes
-Create processor classes for string transformations.
-**Topics:** Virtual methods, method overriding, collection processing
+A simple ASP.NET Core Web API with MySQL and Entity Framework Core for product catalog management.
 
-### Ex24 - "is" Operator and Null Object
-Identify numeric types and return descriptions or null.
-**Topics:** is operator, type checking, null returns, numeric types
+### VShop (Microservices)
 
-### Ex25 - Abstract Methods - Shapes
-Implement abstract Shape class with concrete shape implementations.
-**Topics:** Abstract classes, abstract methods, polymorphism, Math.PI
+A microservices-based e-commerce platform built with ASP.NET Core:
+
+| Service | Description |
+|---------|-------------|
+| VShop.ProductApi | Product catalog (Clean Architecture) |
+| VShop.CartApi | Shopping cart management |
+| VShop.DiscountApi | Coupon and discount system |
+| VShop.IdentityServer | OAuth2/OIDC authentication |
+| VShop.Web | ASP.NET MVC BFF (Backend for Frontend) |
 
 ---
 
-## 🚀 How to Use
+## Interview Preparation
+
+The `Interview_Exercises/` folder contains exercises focused on Senior Software Development Engineer preparation.
+
+### Implementation Exercises (IX01-IX10)
+
+| Exercise | Topic |
+|----------|-------|
+| IX01 | Advanced LINQ - Query Pipeline |
+| IX02 | Generics - Generic Cache |
+| IX03 | Design Patterns - Payment Processor |
+| IX04 | Error Handling - Retry Policy & Circuit Breaker |
+| IX05 | Async/Await - Parallel Data Fetcher |
+| IX06 | SOLID Refactoring - Report Generator |
+| IX07 | Dependency Injection - Notification Service |
+| IX08 | Collections - Priority Task Scheduler |
+| IX09 | Refactoring - Legacy Order System |
+| IX10 | Minimal API - Product Catalog |
+
+### Job Description Exercises (JD01-JD10)
+
+| Exercise | Topic |
+|----------|-------|
+| JD01 | xUnit Advanced Testing |
+| JD04 | EF Core - Repository Pattern |
+| JD05 | Debugging Challenge |
+| JD06 | Code Review Exercise |
+| JD07 | ASP.NET Core Auth API |
+| JD08 | Stored Procedures - Data Access |
+| JD09 | Integration Testing Suite |
+| JD10 | Order Management System |
+
+Additional resources: `INTERVIEW_CHEATSHEET.md` and `flashcards_csharp_senior.csv`.
+
+---
+
+## How to Use
+
+### Prerequisites
+
+- [.NET 9 SDK](https://dotnet.microsoft.com/download) (or later)
 
 ### Run a Specific Exercise
+
 ```bash
 dotnet run --project 01_Fundamentals/Ex01_Variables_and_Operators
 ```
 
-### Navigate and Run
+### Run Tests
+
 ```bash
-cd 02_Basics_of_OOP/Ex15_HotelBooking_class
-dotnet run
+dotnet test 16_Asynchrony_and_Multithreading/Assignment_Quote_Finder.Tests
 ```
 
-### Build All Projects
+### Build the Entire Solution
+
 ```bash
 dotnet build CSharpStudies.sln
 ```
+
+## License
+
+See [LICENSE.txt](LICENSE.txt).

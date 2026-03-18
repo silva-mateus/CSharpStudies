@@ -1,0 +1,46 @@
+@{
+    ViewData["Title"] = "Pedido Confirmado";
+}
+
+<!-- Step Indicator -->
+<div class="vshop-steps">
+    <div class="vshop-step completed">
+        <span class="step-number"><i class="fa-solid fa-check" style="font-size:.65rem;"></i></span>
+        Carrinho
+    </div>
+    <div class="vshop-step-divider"></div>
+    <div class="vshop-step completed">
+        <span class="step-number"><i class="fa-solid fa-check" style="font-size:.65rem;"></i></span>
+        Checkout
+    </div>
+    <div class="vshop-step-divider"></div>
+    <div class="vshop-step active">
+        <span class="step-number">3</span>
+        Confirmação
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="vshop-card text-center p-5">
+            <div class="mb-4">
+                <i class="fa-solid fa-check-circle vshop-success-icon"></i>
+            </div>
+
+            <h2 style="font-weight: 400; font-size: 1.6rem; margin-bottom: .5rem;">
+                Pedido Realizado com Sucesso!
+            </h2>
+
+            <p class="text-muted mb-4" style="font-size: .95rem;">
+                Seu pedido foi processado e em breve você receberá a confirmação por e-mail.
+                Obrigado por comprar na <strong>VShop</strong>!
+            </p>
+
+            <hr style="max-width: 300px; margin: 1.5rem auto;" />
+
+            <a asp-controller="Home" asp-action="Index" class="btn btn-vshop btn-lg">
+                <i class="fa-solid fa-arrow-left"></i> Continuar Comprando
+            </a>
+        </div>
+    </div>
+</div>

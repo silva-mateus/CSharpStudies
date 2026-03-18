@@ -1,0 +1,64 @@
+@model VShop.Web.Models.ProductViewModel
+
+@{
+    ViewData["Title"] = "Excluir Produto";
+}
+
+<div class="vshop-breadcrumb">
+    <a asp-action="Index">Gerenciamento</a>
+    <span class="separator">›</span>
+    <span class="text-muted">Excluir Produto</span>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="vshop-card">
+            <div class="vshop-card-header" style="background:var(--vshop-accent-light);border-bottom-color:var(--vshop-accent);">
+                <i class="fa-solid fa-exclamation-triangle text-vshop me-1"></i>
+                Confirmar Exclusão
+            </div>
+            <div class="card-body p-4">
+                <p class="mb-3" style="font-size:.95rem;">
+                    Tem certeza que deseja excluir este produto? Esta ação não pode ser desfeita.
+                </p>
+
+                <div class="d-flex align-items-center gap-3 p-3 rounded" style="background:#f7fafa;border:1px solid var(--vshop-border);">
+                    @if (!string.IsNullOrEmpty(Model.ImageURL))
+                    {
+                        <img src="~/images/@Model.ImageURL" alt="@Model.Name"
+                             style="width:80px;height:80px;object-fit:contain;" />
+                    }
+                    <div>
+                        <strong style="font-size:1rem;">@Model.Name</strong>
+                        <div class="text-muted" style="font-size:.82rem;">@Model.CategoryName</div>
+                    </div>
+                </div>
+
+                <dl class="row mt-3 mb-0" style="font-size:.9rem;">
+                    <dt class="col-sm-4 text-muted">Descrição</dt>
+                    <dd class="col-sm-8">@Model.Description</dd>
+
+                    <dt class="col-sm-4 text-muted">Preço</dt>
+                    <dd class="col-sm-8 fw-bold">@Model.Price.ToString("C")</dd>
+
+                    <dt class="col-sm-4 text-muted">Estoque</dt>
+                    <dd class="col-sm-8">@Model.Stock unidades</dd>
+                </dl>
+
+                <hr class="my-3" />
+
+                <form asp-action="DeleteProduct">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-vshop">
+                            <i class="fa-solid fa-trash-can"></i> Excluir Produto
+                        </button>
+                        <a asp-action="Index" class="btn btn-vshop-outline">
+                            <i class="fa-solid fa-arrow-left"></i> Voltar à Lista
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

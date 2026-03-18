@@ -1,0 +1,556 @@
+:root {
+    --vshop-navbar: #131921;
+    --vshop-navbar-secondary: #232f3e;
+    --vshop-body-bg: #e3e6e6;
+    --vshop-card-bg: #ffffff;
+    --vshop-accent: #cc0c39;
+    --vshop-accent-hover: #a00a2e;
+    --vshop-accent-light: #fde8ed;
+    --vshop-text: #0f1111;
+    --vshop-text-secondary: #565959;
+    --vshop-link: #007185;
+    --vshop-link-hover: #c7511f;
+    --vshop-border: #d5d9d9;
+    --vshop-star: #ffa41c;
+    --vshop-success: #067d62;
+    --vshop-radius: 8px;
+    --vshop-shadow: 0 2px 5px rgba(0,0,0,.08);
+    --vshop-shadow-hover: 0 4px 12px rgba(0,0,0,.15);
+}
+
+html {
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
+}
+
+@media (min-width: 768px) {
+    html { font-size: 15px; }
+}
+
+body {
+    background-color: var(--vshop-body-bg);
+    color: var(--vshop-text);
+    font-family: "Amazon Ember", Arial, sans-serif;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main.vshop-main {
+    flex: 1;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+}
+
+a {
+    color: var(--vshop-link);
+    text-decoration: none;
+    transition: color .15s;
+}
+
+a:hover {
+    color: var(--vshop-link-hover);
+    text-decoration: underline;
+}
+
+/* ── Amazon-Style Navbar ─────────────────────── */
+.vshop-topbar {
+    background-color: var(--vshop-navbar);
+    padding: .5rem 0;
+}
+
+.vshop-topbar .navbar-brand img {
+    height: 36px;
+    filter: brightness(0) invert(1);
+}
+
+.vshop-topbar .navbar-brand span {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.4rem;
+    letter-spacing: -.5px;
+}
+
+.vshop-search {
+    flex: 1;
+    max-width: 600px;
+    margin: 0 1rem;
+}
+
+.vshop-search .input-group {
+    border-radius: var(--vshop-radius);
+    overflow: hidden;
+}
+
+.vshop-search .form-control {
+    border: none;
+    border-radius: 0;
+    font-size: .9rem;
+}
+
+.vshop-search .form-control:focus {
+    box-shadow: none;
+    border-color: var(--vshop-accent);
+}
+
+.vshop-search .btn-search {
+    background-color: var(--vshop-accent);
+    color: #fff;
+    border: none;
+    padding: 0 .9rem;
+    border-radius: 0;
+}
+
+.vshop-search .btn-search:hover {
+    background-color: var(--vshop-accent-hover);
+}
+
+.vshop-topbar .nav-link,
+.vshop-topbar .nav-text {
+    color: #fff !important;
+    font-size: .85rem;
+    padding: .2rem .6rem;
+    line-height: 1.2;
+    transition: outline .1s;
+    border-radius: 2px;
+}
+
+.vshop-topbar .nav-link:hover {
+    outline: 1px solid #fff;
+    text-decoration: none;
+}
+
+.vshop-topbar .nav-greeting {
+    font-size: .72rem;
+    color: #ccc;
+    display: block;
+}
+
+.vshop-topbar .nav-label {
+    font-size: .88rem;
+    font-weight: 700;
+    color: #fff;
+    display: block;
+}
+
+.vshop-cart-badge {
+    position: relative;
+}
+
+.vshop-cart-badge .badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    font-size: .65rem;
+    background-color: var(--vshop-accent);
+    border-radius: 50%;
+    padding: .25em .5em;
+}
+
+.vshop-cart-badge i {
+    font-size: 1.4rem;
+    color: #fff;
+}
+
+/* ── Sub-Navigation Bar ─────────────────────── */
+.vshop-subnav {
+    background-color: var(--vshop-navbar-secondary);
+    padding: 0;
+}
+
+.vshop-subnav .nav-link {
+    color: #fff !important;
+    font-size: .85rem;
+    padding: .5rem .9rem;
+    white-space: nowrap;
+    transition: background-color .15s;
+}
+
+.vshop-subnav .nav-link:hover {
+    background-color: rgba(255,255,255,.1);
+    text-decoration: none;
+}
+
+.vshop-subnav .nav-link i {
+    margin-right: .3rem;
+}
+
+/* ── Cards ───────────────────────────────────── */
+.vshop-card {
+    background: var(--vshop-card-bg);
+    border: 1px solid var(--vshop-border);
+    border-radius: var(--vshop-radius);
+    box-shadow: var(--vshop-shadow);
+    transition: box-shadow .2s, transform .2s;
+    overflow: hidden;
+}
+
+.vshop-card:hover {
+    box-shadow: var(--vshop-shadow-hover);
+}
+
+.vshop-card-lift:hover {
+    transform: translateY(-3px);
+}
+
+.vshop-card .card-img-wrap {
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    min-height: 200px;
+    border-bottom: 1px solid var(--vshop-border);
+}
+
+.vshop-card .card-img-wrap img {
+    max-height: 170px;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.vshop-card .card-body {
+    padding: .85rem 1rem;
+}
+
+.vshop-card .product-title {
+    color: var(--vshop-link);
+    font-size: .95rem;
+    font-weight: 400;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.vshop-card .product-title:hover {
+    color: var(--vshop-link-hover);
+    text-decoration: underline;
+}
+
+.vshop-card .product-category {
+    font-size: .78rem;
+    color: var(--vshop-text-secondary);
+    margin-bottom: .35rem;
+}
+
+.vshop-card .product-price {
+    color: var(--vshop-text);
+    font-size: 1.3rem;
+    font-weight: 400;
+}
+
+.vshop-card .product-price .price-symbol {
+    font-size: .8rem;
+    vertical-align: super;
+}
+
+/* ── Buttons ─────────────────────────────────── */
+.btn-vshop {
+    background-color: var(--vshop-accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--vshop-radius);
+    padding: .55rem 1.2rem;
+    font-size: .9rem;
+    font-weight: 500;
+    transition: background-color .15s, box-shadow .15s;
+}
+
+.btn-vshop:hover,
+.btn-vshop:focus {
+    background-color: var(--vshop-accent-hover);
+    color: #fff;
+    box-shadow: 0 2px 5px rgba(204,12,57,.3);
+}
+
+.btn-vshop-outline {
+    background-color: transparent;
+    color: var(--vshop-text);
+    border: 1px solid var(--vshop-border);
+    border-radius: var(--vshop-radius);
+    padding: .55rem 1.2rem;
+    font-size: .9rem;
+    transition: background-color .15s;
+}
+
+.btn-vshop-outline:hover {
+    background-color: #f0f0f0;
+}
+
+.btn-vshop-sm {
+    padding: .35rem .75rem;
+    font-size: .82rem;
+}
+
+/* ── Amazon-Style Buy Box ────────────────────── */
+.vshop-buybox {
+    background: var(--vshop-card-bg);
+    border: 1px solid var(--vshop-border);
+    border-radius: var(--vshop-radius);
+    padding: 1.2rem;
+}
+
+.vshop-buybox .price-large {
+    font-size: 1.75rem;
+    color: var(--vshop-accent);
+    font-weight: 400;
+}
+
+.vshop-buybox .stock-status {
+    font-size: .95rem;
+    font-weight: 500;
+}
+
+.vshop-buybox .stock-in { color: var(--vshop-success); }
+.vshop-buybox .stock-out { color: var(--vshop-accent); }
+
+/* ── Quantity Stepper ────────────────────────── */
+.qty-stepper {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--vshop-border);
+    border-radius: var(--vshop-radius);
+    overflow: hidden;
+}
+
+.qty-stepper button {
+    background: #f0f2f2;
+    border: none;
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+    color: var(--vshop-text);
+    cursor: pointer;
+    transition: background-color .15s;
+}
+
+.qty-stepper button:hover { background: #e3e6e6; }
+
+.qty-stepper input {
+    width: 50px;
+    text-align: center;
+    border: none;
+    border-left: 1px solid var(--vshop-border);
+    border-right: 1px solid var(--vshop-border);
+    font-size: .95rem;
+    height: 36px;
+}
+
+.qty-stepper input:focus { outline: none; }
+
+/* ── Tables ──────────────────────────────────── */
+.vshop-table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.vshop-table thead th {
+    background: #f0f2f2;
+    border-bottom: 1px solid var(--vshop-border);
+    font-size: .82rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+    color: var(--vshop-text-secondary);
+    padding: .65rem .85rem;
+}
+
+.vshop-table tbody td {
+    padding: .7rem .85rem;
+    border-bottom: 1px solid #f0f2f2;
+    vertical-align: middle;
+    font-size: .9rem;
+}
+
+.vshop-table tbody tr:hover {
+    background-color: #f7fafa;
+}
+
+/* ── Cart Page ───────────────────────────────── */
+.vshop-cart-item {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--vshop-border);
+}
+
+.vshop-cart-item:last-child { border-bottom: none; }
+
+.vshop-cart-item .item-image {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.vshop-cart-item .item-name {
+    color: var(--vshop-link);
+    font-size: .95rem;
+}
+
+.vshop-cart-item .item-name:hover {
+    color: var(--vshop-link-hover);
+}
+
+.vshop-subtotal-box {
+    background: var(--vshop-card-bg);
+    border: 1px solid var(--vshop-border);
+    border-radius: var(--vshop-radius);
+    padding: 1.2rem;
+}
+
+/* ── Step Indicator ──────────────────────────── */
+.vshop-steps {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 1.5rem;
+}
+
+.vshop-step {
+    display: flex;
+    align-items: center;
+    font-size: .85rem;
+    color: var(--vshop-text-secondary);
+}
+
+.vshop-step .step-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--vshop-border);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: .8rem;
+    margin-right: .4rem;
+}
+
+.vshop-step.active .step-number {
+    background: var(--vshop-accent);
+}
+
+.vshop-step.active {
+    color: var(--vshop-text);
+    font-weight: 600;
+}
+
+.vshop-step.completed .step-number {
+    background: var(--vshop-success);
+}
+
+.vshop-step-divider {
+    width: 50px;
+    height: 2px;
+    background: var(--vshop-border);
+    align-self: center;
+    margin: 0 .5rem;
+}
+
+/* ── Forms ───────────────────────────────────── */
+.vshop-form .form-label {
+    font-size: .85rem;
+    font-weight: 600;
+    color: var(--vshop-text);
+    margin-bottom: .3rem;
+}
+
+.vshop-form .form-control,
+.vshop-form .form-select {
+    border: 1px solid var(--vshop-border);
+    border-radius: 4px;
+    padding: .5rem .75rem;
+    font-size: .9rem;
+    transition: border-color .15s, box-shadow .15s;
+}
+
+.vshop-form .form-control:focus,
+.vshop-form .form-select:focus {
+    border-color: var(--vshop-accent);
+    box-shadow: 0 0 0 3px var(--vshop-accent-light);
+}
+
+/* ── Footer ──────────────────────────────────── */
+.vshop-footer-bottom {
+    background-color: var(--vshop-navbar);
+    color: #999;
+    padding: 1rem 0;
+    font-size: .82rem;
+    text-align: center;
+}
+
+.vshop-footer-bottom a:hover {
+    color: #fff;
+}
+
+/* ── Breadcrumbs ─────────────────────────────── */
+.vshop-breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin-bottom: 1rem;
+    font-size: .82rem;
+}
+
+.vshop-breadcrumb a {
+    color: var(--vshop-link);
+}
+
+.vshop-breadcrumb .separator {
+    color: var(--vshop-text-secondary);
+    margin: 0 .4rem;
+}
+
+/* ── Alerts / Coupon ─────────────────────────── */
+.vshop-coupon-tag {
+    background: var(--vshop-accent-light);
+    border: 1px dashed var(--vshop-accent);
+    border-radius: 4px;
+    padding: .4rem .75rem;
+    font-size: .85rem;
+    color: var(--vshop-accent);
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+/* ── Success Animation ───────────────────────── */
+@keyframes pulseCheck {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.vshop-success-icon {
+    font-size: 5rem;
+    color: var(--vshop-success);
+    animation: pulseCheck 1.5s ease-in-out infinite;
+}
+
+/* ── Misc ────────────────────────────────────── */
+.text-vshop { color: var(--vshop-accent) !important; }
+.bg-vshop { background-color: var(--vshop-accent) !important; }
+
+.vshop-section-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--vshop-text);
+    padding-bottom: .5rem;
+    border-bottom: 2px solid var(--vshop-accent);
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.vshop-card-header {
+    background: #f0f2f2;
+    border-bottom: 1px solid var(--vshop-border);
+    padding: .75rem 1rem;
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--vshop-accent);
+}

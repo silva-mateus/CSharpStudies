@@ -1,8 +1,4 @@
-.suo
-.user
-.userosscache
-.sln.docstates
-
+## Build output
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
@@ -13,10 +9,41 @@ build/
 bld/
 [Bb]in/
 [Oo]bj/
+[Oo]ut/
 
+## Visual Studio
 .vs/
 .vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.DotSettings.user
 
-[Tt]est[Rr]esult/
+## Cursor IDE
+.cursor/
+
+## Test results
+[Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
+*.trx
+coverage*/
 
+## NuGet
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nupkg
+**/[Pp]ackages/*.lock.json
+
+## Publish output
+*.publish.xml
+publish/
+
+## OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+## Rider
+.idea/

@@ -1,0 +1,66 @@
+@model CartItemViewModel
+
+@{
+    ViewData["Title"] = "Remover Item";
+}
+
+<div class="vshop-breadcrumb">
+    <a asp-action="Index">Carrinho</a>
+    <span class="separator">›</span>
+    <span class="text-muted">Remover Item</span>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-5">
+        <div class="vshop-card">
+            <div class="vshop-card-header" style="background:var(--vshop-accent-light);border-bottom-color:var(--vshop-accent);">
+                <i class="fa-solid fa-exclamation-triangle text-vshop me-1"></i>
+                Remover Item do Carrinho
+            </div>
+            <div class="card-body p-4">
+                <p style="font-size:.92rem;" class="mb-3">
+                    Tem certeza que deseja remover este item?
+                </p>
+
+                <div class="d-flex align-items-center gap-3 p-3 rounded" style="background:#f7fafa;border:1px solid var(--vshop-border);">
+                    @if (!string.IsNullOrEmpty(Model.Product.ImageURL))
+                    {
+                        <img src="~/images/@Model.Product.ImageURL" alt="@Model.Product.Name"
+                             style="width:70px;height:70px;object-fit:contain;" />
+                    }
+                    <div>
+                        <strong>@Model.Product.Name</strong>
+                        <div class="text-muted" style="font-size:.8rem;">@Model.Product.CategoryName</div>
+                    </div>
+                </div>
+
+                <dl class="row mt-3 mb-0" style="font-size:.88rem;">
+                    <dt class="col-5 text-muted">Preço unitário</dt>
+                    <dd class="col-7">@Model.Product.Price.ToString("C")</dd>
+
+                    <dt class="col-5 text-muted">Quantidade</dt>
+                    <dd class="col-7">@Model.Quantity</dd>
+
+                    <dt class="col-5 text-muted">Subtotal</dt>
+                    <dd class="col-7 fw-bold" style="color:var(--vshop-accent);">
+                        @((Model.Product.Price * Model.Quantity).ToString("C"))
+                    </dd>
+                </dl>
+
+                <hr class="my-3" />
+
+                <div class="d-flex gap-2">
+                    <form asp-action="RemoveItem" method="post">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn btn-vshop">
+                            <i class="fa-solid fa-trash-can"></i> Remover
+                        </button>
+                    </form>
+                    <a asp-action="Index" class="btn btn-vshop-outline">
+                        <i class="fa-solid fa-arrow-left"></i> Voltar ao Carrinho
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

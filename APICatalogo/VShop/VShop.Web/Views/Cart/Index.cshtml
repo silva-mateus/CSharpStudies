@@ -1,0 +1,166 @@
+@model CartViewModel
+
+@{
+    ViewData["Title"] = "Carrinho de Compras";
+    decimal total = 0;
+    int totalItems = 0;
+}
+
+<h2 class="vshop-section-title">Carrinho de Compras</h2>
+
+@if (!Model.CartItems.Any())
+{
+    <div class="vshop-card text-center p-5">
+        <i class="fa-solid fa-cart-shopping fa-4x mb-3" style="color: var(--vshop-border);"></i>
+        <h4 style="font-weight: 400;">Seu carrinho está vazio</h4>
+        <p class="text-muted mb-3">Você ainda não adicionou nenhum produto ao carrinho.</p>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-vshop">
+            <i class="fa-solid fa-arrow-left"></i> Continuar Comprando
+        </a>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        <!-- Cart Items -->
+        <div class="col-lg-8">
+            <div class="vshop-card">
+                <div class="vshop-card-header d-flex justify-content-between align-items-center">
+                    <span>Itens no Carrinho</span>
+                    <span class="text-muted" style="font-size:.85rem;">Preço</span>
+                </div>
+                <div class="p-3">
+                    @foreach (var item in Model.CartItems)
+                    {
+                        var subtotal = item.Product.Price * item.Quantity;
+                        total += subtotal;
+                        totalItems += item.Quantity;
+
+                        <div class="vshop-cart-item">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    @if (!string.IsNullOrEmpty(item.Product.ImageURL))
+                                    {
+                                        <img src="~/images/@item.Product.ImageURL" alt="@item.Product.Name"
+                                             class="item-image" />
+                                    }
+                                    else
+                                    {
+                                        <div class="item-image d-flex align-items-center justify-content-center bg-light rounded">
+                                            <i class="fa-solid fa-image text-muted"></i>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="col">
+                                    <a class="item-name text-decoration-none fw-bold d-block mb-1">
+                                        @item.Product.Name
+                                    </a>
+                                    <span class="text-muted" style="font-size:.8rem;">@item.Product.CategoryName</span>
+                                    <div class="mt-2 d-flex align-items-center gap-3">
+                                        <span class="badge bg-light text-dark border" style="font-size:.82rem;">
+                                            Qtd: @item.Quantity
+                                        </span>
+                                        <a asp-action="RemoveItem" asp-route-id="@item.Id"
+                                           style="font-size:.82rem;color:var(--vshop-link);">
+                                            <i class="fa-solid fa-trash-can"></i> Remover
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-auto text-end">
+                                    <strong style="font-size:1.1rem;">@subtotal.ToString("C")</strong>
+                                    @if (item.Quantity > 1)
+                                    {
+                                        <div class="text-muted" style="font-size:.78rem;">
+                                            @item.Product.Price.ToString("C") cada
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="p-3 text-end" style="background:#f7fafa;border-top:1px solid var(--vshop-border);">
+                    <span style="font-size:1.05rem;">
+                        Subtotal (@totalItems @(totalItems == 1 ? "item" : "itens")):
+                        <strong style="font-size:1.2rem;">@total.ToString("C")</strong>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Summary Sidebar -->
+        <div class="col-lg-4">
+            @{
+                var discount = Model.CartHeader.Discount;
+                var totalAfterDiscount = discount > 0 ? total - discount : total;
+                if (totalAfterDiscount < 0) totalAfterDiscount = 0;
+            }
+            <div class="vshop-subtotal-box mb-3">
+                <div class="d-flex justify-content-between mb-1" style="font-size:.9rem;">
+                    <span>Subtotal (@totalItems @(totalItems == 1 ? "item" : "itens"))</span>
+                    <span>@total.ToString("C")</span>
+                </div>
+
+                @if (discount > 0)
+                {
+                    <div class="d-flex justify-content-between mb-1" style="font-size:.9rem;color:var(--vshop-success);">
+                        <span><i class="fa-solid fa-tag"></i> Desconto</span>
+                        <span>- @discount.ToString("C")</span>
+                    </div>
+                }
+
+                <hr class="my-2" />
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span style="font-size:1.05rem;font-weight:700;">Total</span>
+                    <strong style="font-size:1.25rem;">
+                        @totalAfterDiscount.ToString("C")
+                    </strong>
+                </div>
+
+                <a asp-action="Checkout" class="btn btn-vshop w-100 mb-2">
+                    <i class="fa-solid fa-lock"></i> Finalizar Compra
+                </a>
+
+                <a asp-controller="Home" asp-action="Index" class="btn btn-vshop-outline w-100">
+                    <i class="fa-solid fa-arrow-left"></i> Continuar Comprando
+                </a>
+            </div>
+
+            <!-- Coupon Section -->
+            <div class="vshop-subtotal-box">
+                <h6 style="font-size:.9rem;font-weight:700;margin-bottom:.75rem;">
+                    <i class="fa-solid fa-tag"></i> Cupom de Desconto
+                </h6>
+
+                <form asp-action="ApplyCoupon" method="post">
+                    <input type="hidden" asp-for="CartHeader.Id" />
+                    <input type="hidden" asp-for="CartHeader.UserId" />
+                    <div class="input-group input-group-sm">
+                        <input type="text" asp-for="CartHeader.CouponCode"
+                               class="form-control" placeholder="Digite o cupom" />
+                        <button type="submit" class="btn btn-vshop btn-vshop-sm">Aplicar</button>
+                    </div>
+                </form>
+
+                @if (!string.IsNullOrEmpty(Model.CartHeader.CouponCode))
+                {
+                    <div class="mt-2 d-flex justify-content-between align-items-center">
+                        <span class="vshop-coupon-tag">
+                            <i class="fa-solid fa-tag"></i> @Model.CartHeader.CouponCode
+                            @if (discount > 0)
+                            {
+                                <span>(- @discount.ToString("C"))</span>
+                            }
+                        </span>
+                        <form asp-action="RemoveCoupon" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Remover cupom">
+                                <i class="fa-solid fa-times"></i>
+                            </button>
+                        </form>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

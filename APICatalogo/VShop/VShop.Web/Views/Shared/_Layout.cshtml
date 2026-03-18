@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - VShop</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/VShop.Web.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <!-- Top Navbar -->
+    <nav class="vshop-topbar">
+        <div class="container-fluid px-3 px-lg-5">
+            <div class="d-flex align-items-center justify-content-between">
+                <!-- Logo -->
+                <a class="navbar-brand d-flex align-items-center me-3 text-decoration-none" asp-controller="Home" asp-action="Index">
+                    <span style="color:#fff;font-weight:800;font-size:1.5rem;">V<span style="color:var(--vshop-accent);">Shop</span></span>
+                </a>
+
+                <!-- Right Nav -->
+                <ul class="navbar-nav d-flex flex-row align-items-center gap-1">
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link px-2" asp-controller="Home" asp-action="Index">
+                                <span class="nav-greeting">Olá, @User.Identity.Name</span>
+                                <span class="nav-label">Produtos</span>
+                            </a>
+                        </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link px-2" asp-controller="Products" asp-action="Index">
+                                    <span class="nav-greeting">Admin</span>
+                                    <span class="nav-label">Gerenciar</span>
+                                </a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link px-2" asp-controller="Account" asp-action="Logout">
+                                <span class="nav-greeting">&nbsp;</span>
+                                <span class="nav-label">Sair</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ms-2">
+                            <a class="nav-link vshop-cart-badge" asp-controller="Cart" asp-action="Index">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                                <span style="color:#fff;font-size:.85rem;margin-left:4px;font-weight:700;">Carrinho</span>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link px-2" asp-controller="Account" asp-action="Login">
+                                <span class="nav-greeting">Olá, faça login</span>
+                                <span class="nav-label">Entrar</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sub Navigation -->
+    <nav class="vshop-subnav">
+        <div class="container-fluid px-3 px-lg-5">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Home" asp-action="Index">
+                        <i class="fa-solid fa-box-open"></i> Produtos
+                    </a>
+                </li>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Cart" asp-action="Index">
+                            <i class="fa-solid fa-cart-shopping"></i> Carrinho
+                        </a>
+                    </li>
+                }
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Products" asp-action="Index">
+                            <i class="fa-solid fa-gears"></i> Gerenciamento
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid px-3 px-lg-5">
+        <main role="main" class="vshop-main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="vshop-footer-bottom">
+            <span style="color:#fff;font-weight:700;">V<span style="color:var(--vshop-accent);">Shop</span></span>
+            &nbsp;&mdash;&nbsp;
+            <a asp-controller="Home" asp-action="Privacy" style="color:#999;text-decoration:none;">Privacidade</a>
+            &nbsp;&mdash;&nbsp;
+            &copy; 2026 VShop. Todos os direitos reservados.
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,107 @@
+@model VShop.Web.Models.ProductViewModel
+
+@{
+    ViewData["Title"] = "Editar Produto";
+}
+
+<div class="vshop-breadcrumb">
+    <a asp-action="Index">Gerenciamento</a>
+    <span class="separator">›</span>
+    <span class="text-muted">Editar Produto</span>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="vshop-card">
+            <div class="vshop-card-header">
+                <i class="fa-solid fa-pen-to-square me-1"></i> Editar Produto
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="UpdateProduct" class="vshop-form">
+                    <div asp-validation-summary="All" class="alert alert-danger" style="display:none;"></div>
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="row g-3">
+                        <div class="col-md-8">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="CategoryId" class="form-label"></label>
+                            <select asp-for="CategoryId" class="form-select" asp-items="@ViewBag.CategoryId"></select>
+                            <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="Description" class="form-label"></label>
+                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="Price" class="form-label"></label>
+                            <div class="input-group">
+                                <span class="input-group-text">R$</span>
+                                <input asp-for="Price" class="form-control" />
+                            </div>
+                            <span asp-validation-for="Price" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="Stock" class="form-label"></label>
+                            <input asp-for="Stock" class="form-control" />
+                            <span asp-validation-for="Stock" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="ImageURL" class="form-label"></label>
+                            <input asp-for="ImageURL" class="form-control" id="imageUrlInput" />
+                            <span asp-validation-for="ImageURL" class="text-danger small"></span>
+                        </div>
+                        @if (!string.IsNullOrEmpty(Model.ImageURL))
+                        {
+                            <div class="col-12" id="imagePreview">
+                                <label class="form-label">Preview</label>
+                                <div class="border rounded p-2 text-center bg-light" style="max-height:150px;">
+                                    <img id="previewImg" src="~/images/@Model.ImageURL" style="max-height:130px;object-fit:contain;" />
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-vshop">
+                            <i class="fa-solid fa-save"></i> Salvar Alterações
+                        </button>
+                        <a asp-action="Index" class="btn btn-vshop-outline">
+                            <i class="fa-solid fa-arrow-left"></i> Voltar à Lista
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script>
+        document.getElementById('imageUrlInput')?.addEventListener('input', function () {
+            let preview = document.getElementById('imagePreview');
+            let img = document.getElementById('previewImg');
+            if (!preview) {
+                const col = document.createElement('div');
+                col.className = 'col-12';
+                col.id = 'imagePreview';
+                col.innerHTML = '<label class="form-label">Preview</label><div class="border rounded p-2 text-center bg-light" style="max-height:150px;"><img id="previewImg" style="max-height:130px;object-fit:contain;" /></div>';
+                this.closest('.row').appendChild(col);
+                img = document.getElementById('previewImg');
+            }
+            if (this.value) {
+                img.src = '/images/' + this.value;
+                document.getElementById('imagePreview').style.display = 'block';
+            } else {
+                document.getElementById('imagePreview').style.display = 'none';
+            }
+        });
+    </script>
+}

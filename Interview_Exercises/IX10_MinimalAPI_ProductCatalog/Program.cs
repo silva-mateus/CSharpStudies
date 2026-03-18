@@ -11,10 +11,23 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateProductRequestValidat
 
 var app = builder.Build();
 
-// TODO: Add global error handling middleware
-// app.Use(async (context, next) => { ... });
+app.Use(async (context, next) =>
+{
+    try
+    {
+        await next(context);
+    }
+    catch (Exception)
+    {
+        if (!context.Response.HasStarted)
+        {
+            context.Response.StatusCode = 500;
+            await context.Response.WriteAsJsonAsync(new { title = "An error occurred", status = 500 });
+        }
+    }
+}
 
-// TODO: Define the following endpoints:
+);
 
 // GET /products - List products with filtering and pagination
 // Query params: category, minPrice, maxPrice, search, page, pageSize
@@ -27,19 +40,31 @@ app.MapGet("/products", async (
     int? page,
     int? pageSize) =>
 {
-    // TODO: your code goes here
-    // 1. Create ProductFilter from query params (with defaults and pageSize capped at 50).
-    // 2. Call repo.GetAllAsync(filter).
-    // 3. Return PagedResponse with calculated TotalPages.
-    return Results.Ok("Not implemented");
+    var actualPageSize = Math.Min(pageSize ?? 10, 50);
+    var filter = new ProductFilter(
+        Category: category,
+        MinPrice: minPrice,
+        MaxPrice: maxPrice,
+        Search: search,
+        Page: page ?? 1,
+        PageSize: actualPageSize);
+
+    var result = await repo.GetAllAsync(filter);
+    var totalPages = (int)Math.Ceiling((double)result.TotalCount / actualPageSize);
+
+    return Results.Ok(new PagedResponse<Product>(
+        result.Items,
+        filter.Page,
+        actualPageSize,
+        result.TotalCount,
+        totalPages));
 });
 
 // GET /products/{id} - Get single product
 app.MapGet("/products/{id:guid}", async (Guid id, IProductRepository repo) =>
 {
-    // TODO: your code goes here
-    // Return the product or Results.NotFound()
-    return Results.Ok("Not implemented");
+    var product = await repo.GetByIdAsync(id);
+    return product is not null ? Results.Ok(product) : Results.NotFound();
 });
 
 // POST /products - Create a product
@@ -48,12 +73,25 @@ app.MapPost("/products", async (
     IValidator<CreateProductRequest> validator,
     IProductRepository repo) =>
 {
-    // TODO: your code goes here
-    // 1. Validate request. If invalid, return Results.ValidationProblem(errors).
-    // 2. Map DTO to Product entity.
-    // 3. Call repo.CreateAsync.
-    // 4. Return Results.Created($"/products/{product.Id}", product).
-    return Results.Ok("Not implemented");
+    var validationResult = await validator.ValidateAsync(request);
+    if (!validationResult.IsValid)
+    {
+        var errors = validationResult.Errors
+            .GroupBy(e => e.PropertyName)
+            .ToDictionary(g => g.Key, g => g.Select(e => e.ErrorMessage).ToArray());
+        return Results.ValidationProblem(errors);
+    }
+
+    var product = new Product
+    {
+        Name = request.Name,
+        Description = request.Description,
+        Price = request.Price,
+        Category = request.Category
+    };
+
+    var created = await repo.CreateAsync(product);
+    return Results.Created($"/products/{created.Id}", created);
 });
 
 // PUT /products/{id} - Update a product
@@ -63,23 +101,36 @@ app.MapPut("/products/{id:guid}", async (
     IValidator<UpdateProductRequest> validator,
     IProductRepository repo) =>
 {
-    // TODO: your code goes here
-    // 1. Validate request.
-    // 2. Map DTO to Product entity.
-    // 3. Call repo.UpdateAsync. If null, return NotFound.
-    // 4. Return Ok with updated product.
-    return Results.Ok("Not implemented");
+    var validationResult = await validator.ValidateAsync(request);
+    if (!validationResult.IsValid)
+    {
+        var errors = validationResult.Errors
+            .GroupBy(e => e.PropertyName)
+            .ToDictionary(g => g.Key, g => g.Select(e => e.ErrorMessage).ToArray());
+        return Results.ValidationProblem(errors);
+    }
+
+    var product = new Product
+    {
+        Name = request.Name,
+        Description = request.Description,
+        Price = request.Price,
+        Category = request.Category
+    };
+
+    var updated = await repo.UpdateAsync(id, product);
+    return updated is not null ? Results.Ok(updated) : Results.NotFound();
 });
 
 // DELETE /products/{id} - Delete a product
 app.MapDelete("/products/{id:guid}", async (Guid id, IProductRepository repo) =>
 {
-    // TODO: your code goes here
-    // Delete or return NotFound
-    return Results.Ok("Not implemented");
+    var deleted = await repo.DeleteAsync(id);
+    return deleted ? Results.NoContent() : Results.NotFound();
 });
 
 app.Run();
+
 
 // Required for WebApplicationFactory in integration tests
 public partial class Program { }

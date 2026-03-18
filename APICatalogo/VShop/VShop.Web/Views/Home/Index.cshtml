@@ -1,0 +1,82 @@
+@model IEnumerable<VShop.Web.Models.ProductViewModel>
+
+@{
+    ViewData["Title"] = "Produtos";
+}
+
+<!-- Hero Banner -->
+<div class="vshop-card mb-4 p-0" style="border:none;">
+    <div style="background: linear-gradient(135deg, var(--vshop-navbar) 0%, var(--vshop-navbar-secondary) 100%);
+                border-radius: var(--vshop-radius); padding: 2.5rem 2rem; color: #fff;">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 style="font-size: 1.8rem; font-weight: 700; margin-bottom: .5rem;">
+                    Bem-vindo à <span style="color: var(--vshop-accent);">VShop</span>
+                </h1>
+                <p style="font-size: 1rem; color: #ccc; margin-bottom: 0;">
+                    Encontre os melhores produtos com os melhores preços. Confira nossas ofertas!
+                </p>
+            </div>
+            <div class="col-md-4 text-end d-none d-md-block">
+                <i class="fa-solid fa-tags" style="font-size: 4rem; color: var(--vshop-accent); opacity: .5;"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Section Title -->
+<h2 class="vshop-section-title">Nossos Produtos</h2>
+
+<!-- Product Grid -->
+<div class="row">
+    @if (Model != null && Model.Any())
+    {
+        @foreach (var product in Model)
+        {
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-4">
+                <div class="vshop-card vshop-card-lift h-100">
+                    <a asp-action="ProductDetails" asp-route-id="@product.Id" class="text-decoration-none">
+                        <div class="card-img-wrap">
+                            @if (!string.IsNullOrEmpty(product.ImageURL))
+                            {
+                                <img src="~/images/@product.ImageURL" alt="@product.Name" />
+                            }
+                            else
+                            {
+                                <i class="fa-solid fa-image fa-3x text-muted"></i>
+                            }
+                        </div>
+                    </a>
+                    <div class="card-body d-flex flex-column">
+                        <span class="product-category">@product.CategoryName</span>
+                        <a asp-action="ProductDetails" asp-route-id="@product.Id" class="product-title text-decoration-none mb-2">
+                            @product.Name
+                        </a>
+                        <p class="text-muted mb-2" style="font-size:.8rem; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">
+                            @product.Description
+                        </p>
+                        <div class="mt-auto">
+                            <span class="product-price">
+                                @product.Price.ToString("C")
+                            </span>
+                        </div>
+                        <a asp-action="ProductDetails" asp-route-id="@product.Id"
+                           class="btn btn-vshop btn-vshop-sm w-100 mt-2">
+                            <i class="fa-solid fa-eye"></i> Ver Detalhes
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-12">
+            <div class="vshop-card text-center p-5">
+                <i class="fa-solid fa-box-open fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted">Nenhum produto encontrado</h5>
+                <p class="text-muted">Volte mais tarde para conferir nossas novidades.</p>
+            </div>
+        </div>
+    }
+</div>

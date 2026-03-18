@@ -1,0 +1,75 @@
+@model IEnumerable<VShop.Web.Models.ProductViewModel>
+
+@{
+    ViewData["Title"] = "Gerenciamento de Produtos";
+}
+
+<div class="vshop-card">
+    <div class="vshop-card-header d-flex justify-content-between align-items-center">
+        <div>
+            <i class="fa-solid fa-boxes-stacked me-1"></i> Gerenciamento de Produtos
+            @if (Model != null)
+            {
+                <span class="badge bg-secondary ms-2">@Model.Count() produtos</span>
+            }
+        </div>
+        <a asp-action="CreateProduct" class="btn btn-vshop btn-vshop-sm">
+            <i class="fa-solid fa-plus"></i> Novo Produto
+        </a>
+    </div>
+    <div class="table-responsive">
+        <table class="table vshop-table mb-0">
+            <thead>
+                <tr>
+                    <th style="width:50px;"></th>
+                    <th>Nome</th>
+                    <th>Categoria</th>
+                    <th>Descrição</th>
+                    <th class="text-end">Preço</th>
+                    <th class="text-center">Estoque</th>
+                    <th class="text-center" style="width:120px;">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.ImageURL))
+                                {
+                                    <img src="~/images/@item.ImageURL" alt="@item.Name"
+                                         style="width:40px;height:40px;object-fit:contain;" />
+                                }
+                            </td>
+                            <td><strong>@item.Name</strong></td>
+                            <td>
+                                <span class="badge" style="background-color:var(--vshop-navbar-secondary);font-size:.75rem;">
+                                    @item.CategoryName
+                                </span>
+                            </td>
+                            <td style="max-width:250px;">
+                                <span style="display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;font-size:.85rem;">
+                                    @item.Description
+                                </span>
+                            </td>
+                            <td class="text-end fw-bold">@item.Price.ToString("C")</td>
+                            <td class="text-center">@item.Stock</td>
+                            <td class="text-center">
+                                <a asp-action="UpdateProduct" asp-route-id="@item.Id"
+                                   class="btn btn-warning btn-sm me-1" title="Editar">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <a asp-action="DeleteProduct" asp-route-id="@item.Id"
+                                   class="btn btn-outline-danger btn-sm" title="Excluir">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

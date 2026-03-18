@@ -1,0 +1,112 @@
+@model VShop.Web.Models.ProductViewModel
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<!-- Breadcrumb -->
+<div class="vshop-breadcrumb">
+    <a asp-action="Index">Início</a>
+    <span class="separator">›</span>
+    <span>@Model.CategoryName</span>
+    <span class="separator">›</span>
+    <span class="text-muted">@Model.Name</span>
+</div>
+
+<form method="post" asp-action="ProductDetailsPost" asp-controller="Home">
+    <div class="row g-4">
+        <!-- Product Image -->
+        <div class="col-md-5">
+            <div class="vshop-card p-3">
+                <div class="d-flex align-items-center justify-content-center" style="min-height: 350px;">
+                    @if (!string.IsNullOrEmpty(Model.ImageURL))
+                    {
+                        <img src="~/images/@Model.ImageURL" alt="@Model.Name"
+                             style="max-height: 340px; max-width: 100%; object-fit: contain;" />
+                    }
+                    else
+                    {
+                        <i class="fa-solid fa-image fa-5x text-muted"></i>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-md-4">
+            <h1 style="font-size: 1.5rem; font-weight: 400; color: var(--vshop-text); line-height: 1.4;">
+                @Model.Name
+            </h1>
+
+            <div class="mb-2">
+                <span class="badge" style="background-color: var(--vshop-navbar-secondary); font-size: .78rem;">
+                    @Model.CategoryName
+                </span>
+            </div>
+
+            <hr />
+
+            <p style="font-size: .92rem; color: var(--vshop-text-secondary); line-height: 1.6;">
+                @Model.Description
+            </p>
+        </div>
+
+        <!-- Buy Box -->
+        <div class="col-md-3">
+            <div class="vshop-buybox">
+                <div class="price-large mb-2">
+                    @Model.Price.ToString("C")
+                </div>
+
+                <div class="stock-status mb-3">
+                    @if (Model.Stock > 0)
+                    {
+                        <span class="stock-in"><i class="fa-solid fa-check-circle"></i> Em estoque</span>
+                        <span class="d-block text-muted" style="font-size:.8rem;">@Model.Stock unidades</span>
+                    }
+                    else
+                    {
+                        <span class="stock-out"><i class="fa-solid fa-times-circle"></i> Sem estoque</span>
+                    }
+                </div>
+
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Name" />
+                <input type="hidden" asp-for="Price" />
+                <input type="hidden" asp-for="Description" />
+                <input type="hidden" asp-for="Stock" />
+                <input type="hidden" asp-for="ImageURL" />
+                <input type="hidden" asp-for="CategoryName" />
+                <input type="hidden" asp-for="CategoryId" />
+
+                <label class="form-label" style="font-size:.85rem;font-weight:600;">Quantidade</label>
+                <div class="qty-stepper mb-3">
+                    <button type="button" onclick="changeQty(-1)">−</button>
+                    <input type="number" name="Count" id="Count" value="1" min="1" max="@Model.Stock" readonly />
+                    <button type="button" onclick="changeQty(1)">+</button>
+                </div>
+
+                <button type="submit" class="btn btn-vshop w-100 mb-2">
+                    <i class="fa-solid fa-cart-plus"></i> Adicionar ao Carrinho
+                </button>
+
+                <a asp-action="Index" class="btn btn-vshop-outline w-100">
+                    <i class="fa-solid fa-arrow-left"></i> Voltar
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        function changeQty(delta) {
+            const input = document.getElementById('Count');
+            let val = parseInt(input.value) + delta;
+            const max = parseInt(input.max) || 9999;
+            if (val < 1) val = 1;
+            if (val > max) val = max;
+            input.value = val;
+        }
+    </script>
+}

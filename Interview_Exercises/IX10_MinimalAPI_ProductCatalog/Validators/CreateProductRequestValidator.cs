@@ -13,7 +13,18 @@ public class CreateProductRequestValidator : AbstractValidator<CreateProductRequ
 {
     public CreateProductRequestValidator()
     {
-        // TODO: your validation rules go here
+        RuleFor(x => x.Name)
+            .NotEmpty()
+            .MaximumLength(200);
+
+        RuleFor(x => x.Description)
+            .MaximumLength(1000);
+
+        RuleFor(x => x.Price)
+            .GreaterThan(0);
+
+        RuleFor(x => x.Category)
+            .NotEmpty();
     }
 }
 
@@ -21,6 +32,17 @@ public class UpdateProductRequestValidator : AbstractValidator<UpdateProductRequ
 {
     public UpdateProductRequestValidator()
     {
-        // TODO: your validation rules go here
+        RuleFor(x => x.Name)
+            .NotEmpty()
+            .MaximumLength(200);
+
+        RuleFor(x => x.Description)
+            .MaximumLength(1000);
+
+        RuleFor(x => x.Price)
+            .GreaterThan(0);
+
+        RuleFor(x => x.Category)
+            .NotEmpty();
     }
 }

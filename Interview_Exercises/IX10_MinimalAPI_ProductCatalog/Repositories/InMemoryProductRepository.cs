@@ -1,5 +1,5 @@
-using System.Collections.Concurrent;
 using IX10_MinimalAPI_ProductCatalog.Models;
+using System.Collections.Concurrent;
 
 namespace IX10_MinimalAPI_ProductCatalog.Repositories;
 
@@ -33,39 +33,62 @@ public class InMemoryProductRepository : IProductRepository
 
     public Task<PagedResult<Product>> GetAllAsync(ProductFilter filter)
     {
-        // TODO: your code goes here
-        // 1. Start with all products.
-        // 2. Apply filters: Category (exact match), MinPrice, MaxPrice, Search (name contains, case-insensitive).
-        // 3. Order by CreatedAt descending.
-        // 4. Apply pagination (Skip/Take based on Page and PageSize).
-        // 5. Return PagedResult with items and total count (before pagination).
-        throw new NotImplementedException();
+        var query = _products.Values.AsEnumerable();
+
+        if (!string.IsNullOrWhiteSpace(filter.Category))
+            query = query.Where(p => p.Category == filter.Category);
+
+        if (filter.MinPrice.HasValue)
+            query = query.Where(p => p.Price >= filter.MinPrice.Value);
+
+        if (filter.MaxPrice.HasValue)
+            query = query.Where(p => p.Price <= filter.MaxPrice.Value);
+
+        if (!string.IsNullOrWhiteSpace(filter.Search))
+            query = query.Where(p => p.Name.Contains(filter.Search, StringComparison.OrdinalIgnoreCase));
+
+        var totalCount = query.Count();
+
+        var items = query
+            .OrderByDescending(p => p.CreatedAt)
+            .Skip((filter.Page - 1) * filter.PageSize)
+            .Take(filter.PageSize)
+            .ToList();
+
+        return Task.FromResult(new PagedResult<Product>(items, totalCount));
     }
 
     public Task<Product?> GetByIdAsync(Guid id)
     {
-        // TODO: your code goes here
-        throw new NotImplementedException();
+        _products.TryGetValue(id, out var product);
+        return Task.FromResult(product);
     }
 
     public Task<Product> CreateAsync(Product product)
     {
-        // TODO: your code goes here
-        // Assign Id and CreatedAt if not set.
-        throw new NotImplementedException();
+        product.Id = Guid.NewGuid();
+        product.CreatedAt = DateTime.UtcNow;
+        _products[product.Id] = product;
+        return Task.FromResult(product);
     }
 
     public Task<Product?> UpdateAsync(Guid id, Product product)
     {
-        // TODO: your code goes here
-        // Return null if product doesn't exist.
-        // Update the existing product's fields and set UpdatedAt.
-        throw new NotImplementedException();
+        if (!_products.TryGetValue(id, out var existing))
+            return Task.FromResult<Product?>(null);
+
+        existing.Name = product.Name;
+        existing.Description = product.Description;
+        existing.Price = product.Price;
+        existing.Category = product.Category;
+        existing.UpdatedAt = DateTime.UtcNow;
+
+        _products[id] = existing;
+        return Task.FromResult<Product?>(existing);
     }
 
     public Task<bool> DeleteAsync(Guid id)
     {
-        // TODO: your code goes here
-        throw new NotImplementedException();
+        return Task.FromResult(_products.TryRemove(id, out _));
     }
 }

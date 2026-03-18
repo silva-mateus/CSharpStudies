@@ -1,0 +1,32 @@
+@model LoggedOutViewModel
+
+@{
+    ViewData["signed-out"] = true;
+}
+
+<div class="text-center mt-4">
+    <h2>Logout</h2>
+    <p class="text-muted">Você saiu com sucesso.</p>
+
+    @if (Model.PostLogoutRedirectUri != null)
+    {
+        <div class="mt-3">
+            <a class="btn btn-primary" href="@Model.PostLogoutRedirectUri">
+                Voltar para @Model.ClientName
+            </a>
+        </div>
+    }
+
+    @if (Model.SignOutIframeUrl != null)
+    {
+        <iframe width="0" height="0" class="signout" src="@Model.SignOutIframeUrl"></iframe>
+    }
+</div>
+
+@section scripts
+{
+    @if (Model.AutomaticRedirectAfterSignOut)
+    {
+        <script src="~/js/signout-redirect.js"></script>
+    }
+}

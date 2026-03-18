@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
 VisualStudioVersion = 18.2.11415.280
@@ -127,13 +127,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex64_Tasks_and_waiting", "1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex65_Continuations", "16_Asynchrony_and_Multithreading\Ex65_Continuations\Ex65_Continuations.csproj", "{94FD6D9E-B06F-494F-B0B5-94B89BFCEBFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex66_Handling_AggregateException", "Ex66_Handling_AggregateException\Ex66_Handling_AggregateException.csproj", "{BF69ED46-2DAC-49EE-BBEB-C12914686F71}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex66_Handling_AggregateException", "16_Asynchrony_and_Multithreading\Ex66_Handling_AggregateException\Ex66_Handling_AggregateException.csproj", "{BF69ED46-2DAC-49EE-BBEB-C12914686F71}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex67_Async_await", "Ex67_Async_await\Ex67_Async_await.csproj", "{BDFF0B5E-C990-4D72-B622-674F48035887}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex67_Async_await", "16_Asynchrony_and_Multithreading\Ex67_Async_await\Ex67_Async_await.csproj", "{BDFF0B5E-C990-4D72-B622-674F48035887}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assignment_Quote_Finder", "Assignment_Quote_Finder\Assignment_Quote_Finder.csproj", "{9B5CA575-9C6B-44F5-AD17-12A5DBD36409}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assignment_Quote_Finder", "16_Asynchrony_and_Multithreading\Assignment_Quote_Finder\Assignment_Quote_Finder.csproj", "{9B5CA575-9C6B-44F5-AD17-12A5DBD36409}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assignment_Quote_Finder.Tests", "Assignment_Quote_Finder.Tests\Assignment_Quote_Finder.Tests.csproj", "{2EDD58C3-0C98-484C-AA5F-84994B0AD312}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assignment_Quote_Finder.Tests", "16_Asynchrony_and_Multithreading\Assignment_Quote_Finder.Tests\Assignment_Quote_Finder.Tests.csproj", "{2EDD58C3-0C98-484C-AA5F-84994B0AD312}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,34 @@
+<Solution>
+  <Folder Name="/Backend/ProductApi/">
+    <Project Path="VShop.ProductApi.Domain/VShop.ProductApi.Domain.csproj" />
+    <Project Path="VShop.ProductApi.Application/VShop.ProductApi.Application.csproj" />
+    <Project Path="VShop.ProductApi.Infrastructure/VShop.ProductApi.Infrastructure.csproj" />
+    <Project Path="VShop.ProductApi.Api/VShop.ProductApi.Api.csproj" />
+  </Folder>
+  <Folder Name="/Backend/CartApi/">
+    <Project Path="VShop.CartApi.Domain/VShop.CartApi.Domain.csproj" />
+    <Project Path="VShop.CartApi.Application/VShop.CartApi.Application.csproj" />
+    <Project Path="VShop.CartApi.Infrastructure/VShop.CartApi.Infrastructure.csproj" />
+    <Project Path="VShop.CartApi.Api/VShop.CartApi.Api.csproj" />
+  </Folder>
+  <Folder Name="/Backend/DiscountApi/">
+    <Project Path="VShop.DiscountApi.Domain/VShop.DiscountApi.Domain.csproj" />
+    <Project Path="VShop.DiscountApi.Application/VShop.DiscountApi.Application.csproj" />
+    <Project Path="VShop.DiscountApi.Infrastructure/VShop.DiscountApi.Infrastructure.csproj" />
+    <Project Path="VShop.DiscountApi.Api/VShop.DiscountApi.Api.csproj" />
+  </Folder>
+  <Folder Name="/Backend/">
+    <Project Path="VShop.IdentityServer/VShop.IdentityServer.csproj" />
+  </Folder>
+  <Folder Name="/Frontend/">
+    <Project Path="VShop.Web/VShop.Web.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="VShop.ProductApi.Domain.Tests/VShop.ProductApi.Domain.Tests.csproj" />
+    <Project Path="VShop.ProductApi.Api.Tests/VShop.ProductApi.Api.Tests.csproj" />
+    <Project Path="VShop.CartApi.Domain.Tests/VShop.CartApi.Domain.Tests.csproj" />
+    <Project Path="VShop.CartApi.Api.Tests/VShop.CartApi.Api.Tests.csproj" />
+    <Project Path="VShop.DiscountApi.Domain.Tests/VShop.DiscountApi.Domain.Tests.csproj" />
+    <Project Path="VShop.DiscountApi.Api.Tests/VShop.DiscountApi.Api.Tests.csproj" />
+  </Folder>
+</Solution>
